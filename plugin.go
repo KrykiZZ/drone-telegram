@@ -15,8 +15,9 @@ import (
 	"strconv"
 	"strings"
 
+	tgbotapi "github.com/ofceab-studio/telegram-bot-api"
+
 	"github.com/appleboy/drone-template-lib/template"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 const (
@@ -164,7 +165,6 @@ func globList(keys []string) []string {
 		}
 		newKeys = append(newKeys, matches...)
 	}
-
 	return newKeys
 }
 
@@ -316,7 +316,7 @@ func (p Plugin) Exec() (err error) {
 	var bot *tgbotapi.BotAPI
 	if len(p.Config.Socks5) > 0 {
 		proxyClient := &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
-		bot, err = tgbotapi.NewBotAPIWithClient(p.Config.Token, proxyClient)
+		bot, err = tgbotapi.NewBotAPIWithClient(p.Config.Token, proxyURL.Host, proxyClient)
 	} else {
 		bot, err = tgbotapi.NewBotAPI(p.Config.Token)
 	}
@@ -373,31 +373,32 @@ func (p Plugin) Exec() (err error) {
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
+
 		}
 
 		for _, value := range photos {
-			msg := tgbotapi.NewPhotoUpload(user, value)
+			msg := tgbotapi.NewPhoto(user, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range documents {
-			msg := tgbotapi.NewDocumentUpload(user, value)
+			msg := tgbotapi.NewDocument(user, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range stickers {
-			msg := tgbotapi.NewStickerUpload(user, value)
+			msg := tgbotapi.NewSticker(user, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range audios {
-			msg := tgbotapi.NewAudioUpload(user, value)
+			msg := tgbotapi.NewAudio(user, tgbotapi.FileBytes{Bytes: []byte(value)})
 			msg.Title = "Audio Message."
 			if err := p.Send(bot, msg); err != nil {
 				return err
@@ -405,14 +406,14 @@ func (p Plugin) Exec() (err error) {
 		}
 
 		for _, value := range voices {
-			msg := tgbotapi.NewVoiceUpload(user, value)
+			msg := tgbotapi.NewVoice(user, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range videos {
-			msg := tgbotapi.NewVideoUpload(user, value)
+			msg := tgbotapi.NewVideo(user, tgbotapi.FileBytes{Bytes: []byte(value)})
 			msg.Caption = "Video Message"
 			if err := p.Send(bot, msg); err != nil {
 				return err
