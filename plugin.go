@@ -73,6 +73,7 @@ type (
 		Debug            bool
 		MatchEmail       bool
 		To               []string
+		ThreadID         string
 		Message          string
 		MessageFile      string
 		TemplateVarsFile string
@@ -327,6 +328,15 @@ func (p Plugin) Exec() (err error) {
 
 	bot.Debug = p.Config.Debug
 
+	var threadIDPtr *int
+
+	if p.Config.ThreadID != "" {
+		threadID, err := strconv.Atoi(p.Config.ThreadID)
+		if err == nil {
+			threadIDPtr = &threadID
+		}
+	}
+
 	ids := parseTo(p.Config.To, p.Commit.Email, p.Config.MatchEmail)
 	photos := globList(trimElement(p.Config.Photo))
 	documents := globList(trimElement(p.Config.Document))
@@ -366,7 +376,7 @@ func (p Plugin) Exec() (err error) {
 
 			txt = html.UnescapeString(txt)
 
-			msg := tgbotapi.NewMessage(user, txt)
+			msg := tgbotapi.NewMessage(user, threadIDPtr, txt)
 			msg.ParseMode = p.Config.Format
 			msg.DisableWebPagePreview = p.Config.DisableWebPagePreview
 			msg.DisableNotification = p.Config.DisableNotification
@@ -377,28 +387,28 @@ func (p Plugin) Exec() (err error) {
 		}
 
 		for _, value := range photos {
-			msg := tgbotapi.NewPhoto(user, tgbotapi.FileBytes{Bytes: []byte(value)})
+			msg := tgbotapi.NewPhoto(user, threadIDPtr, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range documents {
-			msg := tgbotapi.NewDocument(user, tgbotapi.FileBytes{Bytes: []byte(value)})
+			msg := tgbotapi.NewDocument(user, threadIDPtr, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range stickers {
-			msg := tgbotapi.NewSticker(user, tgbotapi.FileBytes{Bytes: []byte(value)})
+			msg := tgbotapi.NewSticker(user, threadIDPtr, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range audios {
-			msg := tgbotapi.NewAudio(user, tgbotapi.FileBytes{Bytes: []byte(value)})
+			msg := tgbotapi.NewAudio(user, threadIDPtr, tgbotapi.FileBytes{Bytes: []byte(value)})
 			msg.Title = "Audio Message."
 			if err := p.Send(bot, msg); err != nil {
 				return err
@@ -406,14 +416,14 @@ func (p Plugin) Exec() (err error) {
 		}
 
 		for _, value := range voices {
-			msg := tgbotapi.NewVoice(user, tgbotapi.FileBytes{Bytes: []byte(value)})
+			msg := tgbotapi.NewVoice(user, threadIDPtr, tgbotapi.FileBytes{Bytes: []byte(value)})
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
 		}
 
 		for _, value := range videos {
-			msg := tgbotapi.NewVideo(user, tgbotapi.FileBytes{Bytes: []byte(value)})
+			msg := tgbotapi.NewVideo(user, threadIDPtr, tgbotapi.FileBytes{Bytes: []byte(value)})
 			msg.Caption = "Video Message"
 			if err := p.Send(bot, msg); err != nil {
 				return err
@@ -427,7 +437,7 @@ func (p Plugin) Exec() (err error) {
 				continue
 			}
 
-			msg := tgbotapi.NewLocation(user, location.Latitude, location.Longitude)
+			msg := tgbotapi.NewLocation(user, threadIDPtr, location.Latitude, location.Longitude)
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
@@ -440,7 +450,7 @@ func (p Plugin) Exec() (err error) {
 				continue
 			}
 
-			msg := tgbotapi.NewVenue(user, location.Title, location.Address, location.Latitude, location.Longitude)
+			msg := tgbotapi.NewVenue(user, threadIDPtr, location.Title, location.Address, location.Latitude, location.Longitude)
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}

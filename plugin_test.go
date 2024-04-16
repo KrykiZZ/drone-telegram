@@ -99,6 +99,7 @@ func TestSendMessage(t *testing.T) {
 		Config: Config{
 			Token:    os.Getenv("TELEGRAM_TOKEN"),
 			To:       []string{os.Getenv("TELEGRAM_TO"), os.Getenv("TELEGRAM_TO") + ":appleboy@gmail.com", "中文ID", "1234567890"},
+			ThreadID: os.Getenv("TELEGRAM_THREAD"),
 			Message:  "Test Telegram Chat Bot From Travis or Local, commit message: 『{{ build.message }}』",
 			Photo:    []string{"tests/github.png", "1234", " "},
 			Document: []string{"tests/gophercolor.png", "1234", " "},
@@ -131,6 +132,7 @@ func TestDisableWebPagePreviewMessage(t *testing.T) {
 		Config: Config{
 			Token:                 os.Getenv("TELEGRAM_TOKEN"),
 			To:                    []string{os.Getenv("TELEGRAM_TO")},
+			ThreadID:              os.Getenv("TELEGRAM_THREAD"),
 			DisableWebPagePreview: true,
 			Debug:                 false,
 		},
@@ -152,6 +154,7 @@ func TestDisableNotificationMessage(t *testing.T) {
 		Config: Config{
 			Token:               os.Getenv("TELEGRAM_TOKEN"),
 			To:                  []string{os.Getenv("TELEGRAM_TO")},
+			ThreadID:            os.Getenv("TELEGRAM_THREAD"),
 			DisableNotification: true,
 			Debug:               false,
 		},
@@ -187,9 +190,10 @@ func TestBotError(t *testing.T) {
 		},
 
 		Config: Config{
-			Token:   "appleboy",
-			To:      []string{os.Getenv("TELEGRAM_TO"), "中文ID", "1234567890"},
-			Message: "Test Telegram Chat Bot From Travis or Local",
+			Token:    "appleboy",
+			To:       []string{os.Getenv("TELEGRAM_TO"), "中文ID", "1234567890"},
+			ThreadID: os.Getenv("TELEGRAM_THREAD"),
+			Message:  "Test Telegram Chat Bot From Travis or Local",
 		},
 	}
 
@@ -362,8 +366,9 @@ func TestHTMLMessage(t *testing.T) {
 		},
 
 		Config: Config{
-			Token: os.Getenv("TELEGRAM_TOKEN"),
-			To:    []string{os.Getenv("TELEGRAM_TO")},
+			Token:    os.Getenv("TELEGRAM_TOKEN"),
+			To:       []string{os.Getenv("TELEGRAM_TO")},
+			ThreadID: os.Getenv("TELEGRAM_THREAD"),
 			Message: `
 Test HTML Format
 <a href='https://google.com'>Google .com 1</a>
@@ -403,6 +408,7 @@ func TestMessageFile(t *testing.T) {
 		Config: Config{
 			Token:       os.Getenv("TELEGRAM_TOKEN"),
 			To:          []string{os.Getenv("TELEGRAM_TO")},
+			ThreadID:    os.Getenv("TELEGRAM_THREAD"),
 			MessageFile: "tests/message.txt",
 		},
 	}
@@ -434,6 +440,7 @@ func TestTemplateVars(t *testing.T) {
 		Config: Config{
 			Token:        os.Getenv("TELEGRAM_TOKEN"),
 			To:           []string{os.Getenv("TELEGRAM_TO")},
+			ThreadID:     os.Getenv("TELEGRAM_THREAD"),
 			Format:       formatMarkdown,
 			MessageFile:  "tests/message_template.txt",
 			TemplateVars: `{"env":"testing","version":"1.2.0-SNAPSHOT"}`,
@@ -465,6 +472,7 @@ func TestTemplateVarsFile(t *testing.T) {
 		Config: Config{
 			Token:            os.Getenv("TELEGRAM_TOKEN"),
 			To:               []string{os.Getenv("TELEGRAM_TO")},
+			ThreadID:         os.Getenv("TELEGRAM_THREAD"),
 			Format:           formatMarkdown,
 			MessageFile:      "tests/message_template.txt",
 			TemplateVarsFile: "tests/vars.json",
@@ -496,11 +504,12 @@ func TestProxySendMessage(t *testing.T) {
 		},
 
 		Config: Config{
-			Token:   os.Getenv("TELEGRAM_TOKEN"),
-			To:      []string{os.Getenv("TELEGRAM_TO")},
-			Message: "Send message from socks5 proxy URL.",
-			Debug:   false,
-			Socks5:  os.Getenv("SOCKS5"),
+			Token:    os.Getenv("TELEGRAM_TOKEN"),
+			To:       []string{os.Getenv("TELEGRAM_TO")},
+			ThreadID: os.Getenv("TELEGRAM_THREAD"),
+			Message:  "Send message from socks5 proxy URL.",
+			Debug:    false,
+			Socks5:   os.Getenv("SOCKS5"),
 		},
 	}
 
