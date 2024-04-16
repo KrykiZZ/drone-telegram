@@ -45,6 +45,11 @@ func main() {
 			Usage:  "telegram user",
 			EnvVar: "PLUGIN_TO,TELEGRAM_TO,INPUT_TO",
 		},
+		cli.StringSliceFlag{
+			Name:   "thread_id",
+			Usage:  "telegram topic",
+			EnvVar: "PLUGIN_THREAD,TELEGRAM_THREAD,INPUT_THREAD",
+		},
 		cli.StringFlag{
 			Name:   "message",
 			Usage:  "send telegram message",
