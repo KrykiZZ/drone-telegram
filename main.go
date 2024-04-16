@@ -316,6 +316,7 @@ func run(c *cli.Context) error {
 			Debug:            c.Bool("debug"),
 			MatchEmail:       c.Bool("match.email"),
 			To:               c.StringSlice("to"),
+			ThreadID:         c.String("thread_id"),
 			Message:          c.String("message"),
 			MessageFile:      c.String("message.file"),
 			TemplateVars:     c.String("template.vars"),
