@@ -394,7 +394,7 @@ func (p Plugin) Exec() (err error) {
 		}
 
 		for _, value := range documents {
-			msg := tgbotapi.NewDocument(user, threadIDPtr, tgbotapi.FileBytes{Bytes: []byte(value)})
+			msg := tgbotapi.NewDocument(user, threadIDPtr, tgbotapi.FilePath(value))
 			if err := p.Send(bot, msg); err != nil {
 				return err
 			}
