@@ -31,6 +31,11 @@ func main() {
 	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
+			Name:   "endpoint",
+			Usage:  "Telegram API endpoint",
+			EnvVar: "PLUGIN_ENDPOINT,TELEGRAM_ENDPOINT,INPUT_ENDPOINT",
+		},
+		cli.StringFlag{
 			Name:   "token",
 			Usage:  "telegram token",
 			EnvVar: "PLUGIN_TOKEN,TELEGRAM_TOKEN,INPUT_TOKEN",
@@ -312,6 +317,7 @@ func run(c *cli.Context) error {
 			DeployTo: c.String("deploy.to"),
 		},
 		Config: Config{
+			Endpoint:           c.String("endpoint"),
 			Token:            c.String("token"),
 			Debug:            c.Bool("debug"),
 			MatchEmail:       c.Bool("match.email"),

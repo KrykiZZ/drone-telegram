@@ -69,6 +69,7 @@ type (
 
 	// Config for the plugin.
 	Config struct {
+		Endpoint         string
 		Token            string
 		Debug            bool
 		MatchEmail       bool
@@ -318,6 +319,8 @@ func (p Plugin) Exec() (err error) {
 	if len(p.Config.Socks5) > 0 {
 		proxyClient := &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyURL)}}
 		bot, err = tgbotapi.NewBotAPIWithClient(p.Config.Token, proxyURL.Host, proxyClient)
+	}  else if p.Config.Endpoint {
+		bot, err = tgbotapi.NewBotAPIWithAPIEndpoint(p.Config.Token, p.Config.Endpoint)
 	} else {
 		bot, err = tgbotapi.NewBotAPI(p.Config.Token)
 	}

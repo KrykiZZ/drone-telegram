@@ -504,6 +504,7 @@ func TestProxySendMessage(t *testing.T) {
 		},
 
 		Config: Config{
+			Endpoint:    os.Getenv("TELEGRAM_ENDPOINT"),
 			Token:    os.Getenv("TELEGRAM_TOKEN"),
 			To:       []string{os.Getenv("TELEGRAM_TO")},
 			ThreadID: os.Getenv("TELEGRAM_THREAD"),
